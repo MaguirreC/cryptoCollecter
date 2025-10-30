@@ -2,7 +2,38 @@
 
 Proyecto sencillo para gestionar criptomonedas con Spring Boot.
 
-Este README sólo explica cómo usar Swagger (documentación interactiva) y cómo ejecutar la aplicación con Docker, de forma breve y directa.
+Este README explica rápidamente cómo usar Swagger, cómo ejecutar la app con Docker y qué hacer primero (agregar/sincronizar criptomonedas), de forma breve y directa.
+
+---
+
+## Agregar / sincronizar criptomonedas
+
+Antes de usar la API para consultar o filtrar criptomonedas, necesitas que la base de datos tenga datos. debes llenarla asi:
+
+- Usar el endpoint de sincronización que trae datos desde CoinGecko:
+
+  `GET /api/crypto/sync`
+
+  Al llamar a este endpoint la aplicación descargará y guardará (o actualizará) las criptomonedas más relevantes.
+
+
+---
+
+## Endpoints principales y para qué sirven
+
+- `GET /api/crypto/sync` — Sincroniza los datos desde la API externa (CoinGecko). Úsalo primero para poblar la base de datos.
+
+- `GET /api/crypto/list` — Lista criptomonedas paginadas. Parámetros: `page`, `size`, `sortBy`, `direction`.
+
+- `GET /api/crypto/search?query=...` — Busca por nombre o símbolo (paginado).
+
+- `GET /api/crypto/{id}` — Devuelve los detalles de una criptomoneda por su `id` en la base de datos.
+
+- `GET /api/crypto/filter` — Filtra por rango de precio y market cap. Parámetros opcionales: `minPrice`, `maxPrice`, `minMarketCap`, `maxMarketCap`, además de paginado y orden.
+
+- `POST /api/auth/register` — Registrar un usuario (para obtener acceso a endpoints protegidos).
+
+- `POST /api/auth/login` — Iniciar sesión y obtener un token JWT.
 
 ---
 
@@ -13,8 +44,8 @@ Este README sólo explica cómo usar Swagger (documentación interactiva) y cóm
   http://localhost:8080/swagger-ui.html
 
 - Para probar endpoints protegidos con JWT desde Swagger:
-  1. Registra un usuario con `POST /auth/register`.
-  2. Inicia sesión con `POST /auth/login` y copia el token JWT de la respuesta.
+  1. Registra un usuario con `POST /api/auth/register`.
+  2. Inicia sesión con `POST /api/auth/login` y copia el token JWT de la respuesta.
   3. En Swagger UI haz clic en el botón "Authorize" (ícono del candado).
   4. Pega el token con el prefijo `Bearer `, por ejemplo:
      `Bearer eyJhbGci...`.
@@ -70,7 +101,6 @@ Notas rápidas:
 
 ---
 
-Si quieres, puedo añadir una sección con variables de entorno recomendadas o un ejemplo de `docker-compose.override.yml` para desarrollo local.
+Si quieres, puedo añadir ejemplos de peticiones (curl) para cada endpoint o una guía rápida para pruebas con Postman/Swagger.
 
 Autor: MaguirreC
-
