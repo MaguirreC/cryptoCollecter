@@ -64,7 +64,7 @@ Pasos mínimos:
 1. Clona el repositorio y entra en la carpeta del proyecto:
 
 ```cmd
-git clone <url-del-repositorio>
+git clone https://github.com/MaguirreC/cryptoCollecter.git
 cd cryptoCollector
 ```
 
