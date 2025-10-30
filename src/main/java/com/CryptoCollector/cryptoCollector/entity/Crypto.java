@@ -22,5 +22,10 @@ public class Crypto {
     private String externalId;
     private String name;
     private String symbol;
-    private String priceUsd;
+    private Double priceUsd;
+    private Double marketCap;
+    private Double volume24h;
+    private Double high24h;
+    private Double low24h;
+    private Double priceChange24h;
 }

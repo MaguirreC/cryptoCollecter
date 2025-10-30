@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: crypto_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: crypto_db
+      POSTGRES_USER: crypto_user
+      POSTGRES_PASSWORD: crypto_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crypto_user -d crypto_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - crypto_net
+
+  app:
+    build: .
+    container_name: crypto_app
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/crypto_db
+      SPRING_DATASOURCE_USERNAME: crypto_user
+      SPRING_DATASOURCE_PASSWORD: crypto_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRINGDOC_SWAGGER_UI_PATH: /swagger-ui.html
+    ports:
+      - "8080:8080"
+    networks:
+      - crypto_net
+
+volumes:
+  pg_data:
+
+networks:
+  crypto_net:
+    driver: bridge
